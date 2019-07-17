@@ -26,17 +26,19 @@ interface Pokemon {
 */
 
 export default class PokemonController {
-  index() {
-    return axios.get('https://pokeapi.co/api/v2/pokemon?limit=807').then(res => {
-      const meta: { count: string } = { count: res.data.results.length };
-      const items: Pokemon[] = res.data.results;
-      const byId: ById<Pokemon> = {};
-      items.forEach((pokemon, i) => Object.assign(byId, { [i+1]: pokemon }));
-      return { meta, items, byId };
-    })
+  async index() {
+    const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=807');
+    const pokedata = res.data;
+    const meta: { count: string } = { count: pokedata.results.length };
+    const items: Pokemon[] = pokedata.results;
+    const byId: ById<Pokemon> = {};
+    items.forEach((pokemon, i) => Object.assign(byId, { [i+1]: pokemon }));
+    return { meta, items, byId };
   }
-  show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
+  async show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     const search = request.params.poke;
-    return axios.get(`https://pokeapi.co/api/v2/pokemon/${search}`).then(res => res.data )
+    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${search}`);
+    const pokedata = res.data;
+    return pokedata;
   }
 }
