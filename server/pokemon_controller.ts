@@ -10,21 +10,6 @@ interface Pokemon {
   url: string;
 }
 
-/**
- i would like you to fetch all data from the pokemon api, then provide a data format and interface that matches this:
-
-{
-  items: [...all pokemons],
-  byId: {
-    1: {...pokemonData},
-    2...
-  },
-  meta: {
-    count: 500,
-  }
-}
-*/
-
 export default class PokemonController {
   async index(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=807').catch(err => err);
