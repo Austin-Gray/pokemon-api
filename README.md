@@ -1,6 +1,6 @@
 # Pokemon-api
 
-# Run Locally
+## Run Locally
 
 1. Install the dependencies:
 ```
