@@ -26,19 +26,22 @@ interface Pokemon {
 */
 
 export default class PokemonController {
-  async index() {
-    const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=807');
+  async index(request: Hapi.Request, h: Hapi.ResponseToolkit) {
+    const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=807').catch(err => err);
     const pokedata = res.data;
-    const meta: { count: string } = { count: pokedata.results.length };
-    const items: Pokemon[] = pokedata.results;
-    const byId: ById<Pokemon> = {};
-    items.forEach((pokemon, i) => Object.assign(byId, { [i+1]: pokemon }));
-    return { meta, items, byId };
+    if (pokedata) {
+      const meta: { count: number } = { count: pokedata.results.length };
+      const items: Pokemon[] = pokedata.results;
+      const byId: ById<Pokemon> = {};
+      items.forEach((pokemon, i) => Object.assign(byId, { [i+1]: pokemon }));
+      return { meta, items, byId };
+    } else return h.response('Not found').code(404);
   }
   async show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     const search = request.params.poke;
-    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${search}`);
+    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${search}`).catch(err => err);
     const pokedata = res.data;
-    return pokedata;
+    if (pokedata) return pokedata;
+    else return h.response('Not found').code(404);
   }
 }
