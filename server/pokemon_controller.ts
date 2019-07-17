@@ -10,33 +10,28 @@ interface Pokemon {
   url: string;
 }
 
-/**
- i would like you to fetch all data from the pokemon api, then provide a data format and interface that matches this:
-
-{
-  items: [...all pokemons],
-  byId: {
-    1: {...pokemonData},
-    2...
-  },
-  meta: {
-    count: 500,
-  }
-}
-*/
-
 export default class PokemonController {
-  index() {
-    return axios.get('https://pokeapi.co/api/v2/pokemon?limit=807').then(res => {
-      const meta: { count: string } = { count: res.data.results.length };
-      const items: Pokemon[] = res.data.results;
+  async index(request: Hapi.Request, h: Hapi.ResponseToolkit) {
+    try {
+      const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=807');
+      const pokedata = res.data;
+      const meta: { count: number } = { count: pokedata.results.length };
+      const items: Pokemon[] = pokedata.results;
       const byId: ById<Pokemon> = {};
       items.forEach((pokemon, i) => Object.assign(byId, { [i+1]: pokemon }));
       return { meta, items, byId };
-    })
+    } catch (err) {
+      return h.response('Not found').code(404);
+    }
   }
-  show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
+  async show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     const search = request.params.poke;
-    return axios.get(`https://pokeapi.co/api/v2/pokemon/${search}`).then(res => res.data )
+    try {
+      const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${search}`);
+      const pokedata = res.data;
+      return pokedata;
+    } catch (err) {
+      return h.response('Not found').code(404);
+    }
   }
 }
