@@ -3,7 +3,7 @@ import axios from 'axios';
 import Pokemon from '../models/Pokemon';
 
 interface ById<T> {
-  [key:string]: T
+  [key:number]: T
 };
 
 interface PokeType {
