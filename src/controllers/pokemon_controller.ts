@@ -35,9 +35,7 @@ export default class PokemonController {
       const types = res.data.types.map((e: PokeType) => e.type.name);
       const sprite = res.data.sprites.front_default
 
-      const pokemon = new Pokemon({
-        id, name, sprite, types, url
-      });
+      const pokemon = new Pokemon(name, url, id, sprite, types);
 
       return pokemon;
     } catch (err) {
