@@ -1,4 +1,4 @@
-import PokemonController from './pokemon_controller';
+import PokemonController from '../controllers/pokemon_controller';
 import { ResourceRouter } from 'hapi-resource-router';
 
 export default (routes: ResourceRouter) => {
