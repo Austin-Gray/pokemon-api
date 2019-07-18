@@ -29,7 +29,6 @@ export default class PokemonController {
   }
   async show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     const search = request.params.poke;
-    console.log(pokeCache);
     if (pokeCache[parseInt(search)]) return pokeCache[parseInt(search)];
     else {
       try {
