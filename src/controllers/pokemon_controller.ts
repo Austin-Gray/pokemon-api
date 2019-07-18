@@ -11,6 +11,8 @@ interface PokeType {
   type: { name: string }
 }
 
+const pokeCache: ById<Pokemon> = {}
+
 export default class PokemonController {
   async index(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     try {
@@ -27,19 +29,24 @@ export default class PokemonController {
   }
   async show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     const search = request.params.poke;
-    try {
-      const url = `https://pokeapi.co/api/v2/pokemon/${search}`;
-      const res = await axios.get(url);
-      const name = res.data.name;
-      const id = res.data.id;
-      const types = res.data.types.map((e: PokeType) => e.type.name);
-      const sprite = res.data.sprites.front_default
-
-      const pokemon = new Pokemon(name, url, id, sprite, types);
-
-      return pokemon;
-    } catch (err) {
-      return h.response('Not found').code(404);
+    console.log(pokeCache);
+    if (pokeCache[parseInt(search)]) return pokeCache[parseInt(search)];
+    else {
+      try {
+        const url = `https://pokeapi.co/api/v2/pokemon/${search}`;
+        const res = await axios.get(url);
+        const name = res.data.name;
+        const id = res.data.id;
+        const types = res.data.types.map((e: PokeType) => e.type.name);
+        const sprite = res.data.sprites.front_default
+  
+        const pokemon = new Pokemon(name, url, id, sprite, types);
+  
+        pokeCache[id] = pokemon;
+        return pokemon;
+      } catch (err) {
+        return h.response('Not found').code(404);
+      }
     }
   }
 }
