@@ -1,6 +1,6 @@
 const Hapi = require('hapi');
 const HapiResourceRouter = require('hapi-resource-router');
-import routes from './resources';
+import routes from './src/routes/pokemon_routes';
 
 const server = new Hapi.Server({
   port: 3000,
