@@ -16,7 +16,7 @@ class Pokemon {
     return new Pokemon(name, url, id, sprite, types);
   }
   static findById(id: number) {
-    return pokeCache[id]
+    return pokeCache[id];
   }
 };
 
