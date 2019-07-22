@@ -28,7 +28,7 @@ describe('Server', () => {
       url: '/pokemon'
     });
     expect(response.statusCode).to.equal(200);
-    expect(response.payload.toString()).to.contain('bulbasaur')
+    expect(response.payload.toString()).to.contain('bulbasaur');
   });
 
   it('responds to GET /pokemon/{number}', async () => {
@@ -37,7 +37,7 @@ describe('Server', () => {
       url: '/pokemon/1'
     });
     expect(response.statusCode).to.equal(200);
-    expect(response.payload.toString()).to.contain('bulbasaur')
+    expect(response.payload.toString()).to.contain('bulbasaur');
   });
 
   it('responds to GET /pokemon/{name}', async () => {
@@ -46,6 +46,14 @@ describe('Server', () => {
       url: '/pokemon/bulbasaur'
     });
     expect(response.statusCode).to.equal(200);
-    expect(response.payload.toString()).to.contain('bulbasaur')
+    expect(response.payload.toString()).to.contain('bulbasaur');
+  });
+
+  it('responds to GET /pokemon/{invalid search} with a 404 error', async () => {
+    const response = await server.inject({
+      method: 'GET',
+      url: '/pokemon/invalidsearch'
+    });
+    expect(response.statusCode).to.equal(404);
   });
 });
