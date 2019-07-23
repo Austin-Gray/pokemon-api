@@ -1,6 +1,6 @@
 import * as Hapi from 'hapi';
 import axios from 'axios';
-import Pokemon from '../models/Pokemon';
+import {Pokemon} from '../models';
 
 export interface ById<T> {
   [key:number]: T
@@ -28,6 +28,7 @@ export default class PokemonController {
   async show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     const search = request.params.poke;
     const pokemon = Pokemon.findById(parseInt(search))
+    
     if (pokemon) return pokemon;
     else {
       try {
@@ -37,8 +38,9 @@ export default class PokemonController {
         const id = res.data.id;
         const types = res.data.types.map((e: PokeType) => e.type.name);
         const sprite = res.data.sprites.front_default
-        return Pokemon.create({ name, url, id, sprite, types })
+        return Pokemon.create({ name, url, external_id: id, sprite, types });
       } catch (err) {
+        console.log('err', err);
         return h.response('Not found').code(404);
       }
     }
