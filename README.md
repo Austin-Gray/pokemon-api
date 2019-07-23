@@ -7,17 +7,17 @@
 npm install
 ```
 
-Create a `.env` file with the following and insert the name of the postgres db you wish to use:
+2. Create a `.env` file with the following and insert the name of the postgres db you wish to use:
 ```
 DATABASE_URL=postgres://postgres:postgres@localhost/{DB_NAME}?charset=utf8
 ```
 
-2. Start the server:
+3. Start the server:
 ```
 npm start
 ```
 
-3. The api is now available at http://localhost:3000
+4. The api is now available at http://localhost:3000
 
 ## Routes
 
