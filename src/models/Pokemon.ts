@@ -32,7 +32,8 @@ export default class Pokemon extends Model {
       },
       external_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       name: {
         type: DataTypes.STRING,

@@ -38,7 +38,8 @@ export default class PokemonController {
         const id = res.data.id;
         const types = res.data.types.map((e: PokeType) => e.type.name);
         const sprite = res.data.sprites.front_default
-        return Pokemon.create({ name, url, external_id: id, sprite, types });
+        const result = await Pokemon.findOrCreate({ where: { name, url, external_id: id, sprite, types } });
+        return result[0];
       } catch (err) {
         console.log('err', err);
         return h.response('Not found').code(404);

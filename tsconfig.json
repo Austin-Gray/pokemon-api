@@ -11,6 +11,6 @@
     "baseUrl": ".",
     "lib": ["es2017", "esnext.asynciterable"],
   },
-  "include": ["./src/*"],
-  "exclude": ["./test"]
+  "include": ["./src/**/*", "./database/**/*", "app.ts"],
+  "exclude": ["./test/**/*"]
 }
