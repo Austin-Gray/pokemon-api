@@ -24,7 +24,7 @@ export default class PokemonController {
       const next: string = `${url}/pokemon?offset=${last}&limit=${limit}`;
       const items: Pokemon[] = pokedata.results;
       const byId: ById<Pokemon> = {};
-      items.forEach((pokemon, i) => Object.assign(byId, { [i+1]: pokemon }));
+      items.forEach((pokemon, i) => Object.assign(byId, { [+offset+i+1]: pokemon }));
       return { meta, next, items, byId };
     } catch (err) {
       if (err.response) return h.response(err.response.statusText).code(err.response.status);
