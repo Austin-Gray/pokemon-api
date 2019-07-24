@@ -20,8 +20,8 @@ export default class PokemonController {
       const res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
       const pokedata = res.data;
       const meta: { count: number } = { count: pokedata.results.length };
-      const url: string = request.server.info.uri;
-      const next: string = `${url}/pokemon?offset=${last}&limit=${limit}`;
+      const uri: string = request.server.info.uri;
+      const next: string = `${uri}/pokemon?offset=${last}&limit=${limit}`;
       const items: Pokemon[] = pokedata.results;
       const byId: ById<Pokemon> = {};
       items.forEach((pokemon, i) => Object.assign(byId, { [+offset+i+1]: pokemon }));
@@ -48,8 +48,8 @@ export default class PokemonController {
         const id = res.data.id;
         const types = res.data.types.map((e: PokeType) => e.type.name);
         const sprite = res.data.sprites.front_default;
-        const result = await Pokemon.findOrCreate({ where: { name, url, external_id: id, sprite, types } });
-        return result[0];
+        const result = await Pokemon.upsert({ name, url, external_id: id, sprite, types }, { returning: true });
+        return result;
       }
     } catch (err) {
       if (err.response) return h.response(err.response.statusText).code(err.response.status);
