@@ -2,14 +2,7 @@ import {
   DataTypes,
   Model,
   Sequelize,
-  FindOptions,
-  QueryTypes,
-  CreateOptions,
-  UpdateOptions,
 } from 'sequelize';
-import { ById } from '../controllers/pokemon_controller';
-
-const pokeCache: ById<Pokemon> = {}
 
 export interface PokemonAttributes {
   name: string,
@@ -61,13 +54,5 @@ export default class Pokemon extends Model {
         updatedAt: 'updated_at',
         deletedAt: 'deleted_at',
       })
-  }
-  // static create(pokemon: Pokemon) {
-  //   pokeCache[pokemon.id] = pokemon;
-  //   const { name, url, id, sprite, types } = pokemon
-  //   return new Pokemon(name, url, id, sprite, types);
-  // }
-  static findById(id: number) {
-    return pokeCache[id];
   }
 };
