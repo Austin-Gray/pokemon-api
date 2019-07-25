@@ -15,8 +15,7 @@ interface PokeType {
 export default class PokemonController {
   async index(request: Hapi.Request, h: Hapi.ResponseToolkit) {
     try {
-      let { offset = 0 , limit = 20 }: { offset?: number, limit?: number } = request.query;
-      if (limit === 0) limit = 20;
+      const { offset , limit }: { offset?: number, limit?: number } = request.query;
       const last: number = offset + limit;
       const res = await axios.get(`https://pokeapi.co/api/v2/pokemon`, {
         params: { offset, limit },
@@ -30,8 +29,12 @@ export default class PokemonController {
       items.forEach((pokemon, i) => Object.assign(byId, { [offset+i+1]: pokemon }));
       return { meta, next, items, byId };
     } catch (err) {
-      if (err.response) return h.response(err.response.statusText).code(err.response.status);
-      else return h.response('Internal Server Error').code(500);
+      if (err.response) {
+        return h.response(err.response.statusText).code(err.response.status);
+      } 
+      else {
+        return h.response('Internal Server Error').code(500);
+      }
     }
   }
   async show(request: Hapi.Request, h: Hapi.ResponseToolkit) {
@@ -43,7 +46,9 @@ export default class PokemonController {
       } else {
         pokemon = await Pokemon.findOne({ where: { name: search } });
       }
-      if (pokemon) return pokemon;
+      if (pokemon) {
+        return pokemon;
+      }
       else {
         const url = `https://pokeapi.co/api/v2/pokemon/${search}`;
         const res = await axios.get(url);
@@ -55,8 +60,12 @@ export default class PokemonController {
         return result;
       }
     } catch (err) {
-      if (err.response) return h.response(err.response.statusText).code(err.response.status);
-      else return h.response('Internal Server Error').code(500);
+      if (err.response) {
+        return h.response(err.response.statusText).code(err.response.status);
+      }
+      else {
+        return h.response('Internal Server Error').code(500);
+      }
     }
   }
   static validate = {
